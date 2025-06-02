@@ -19,10 +19,20 @@ class TokenUtil {
             .compact()
     }
 
-    fun parseToken(token: String) : Any {
+    fun parseToken(token: String) : String {
+        return Jwts.parser()
+            .verifyWith(SECRET)
+            .build()
+            .parseSignedClaims(token).toString()
+    }
+
+    fun getUserIdFromToken(token: String) : String {
         return Jwts.parser()
             .verifyWith(SECRET)
             .build()
             .parseSignedClaims(token)
+            .payload
+            .subject
     }
+
 }

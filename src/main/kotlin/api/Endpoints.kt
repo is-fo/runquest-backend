@@ -2,42 +2,35 @@ package org.example.api
 
 import io.javalin.Javalin
 import org.example.auth.UserHandler
-import org.example.dto.LoginRequest
-import org.example.dto.RegisterRequest
-import kotlinx.serialization.json.*
+import org.example.auth.util.TokenUtil
 
-class Endpoints(private val userHandler: UserHandler) {
-    fun init() {
+class Endpoints(userHandler: UserHandler) {
+    init {
+        val app = Javalin.create()
 
-        val app = Javalin.create {
+        AuthEndpoints(app, userHandler)
+        RunEndpoints(app)
 
-        }
-            .get("/") {
-                it.result("Hello Javalin: ${it.ip()}")
-            }.start(7070)
+        app.beforeMatched {
+            val path = it.path()
+            if (path.startsWith("/auth")) return@beforeMatched
 
-        app.post("/auth/register") {
-            val body = it.body()
+            val authHeader = it.header("Authorization")
+            if (authHeader == null) {
+                it.status(401).result("Missing Authorization header")
+                return@beforeMatched
+            }
+            val token = authHeader.replace("Bearer ", "")
+
             try {
-                val request = Json.decodeFromString<RegisterRequest>(body)
-                val success = userHandler.register(request.username, request.password, request.email)
-                if (success) it.status(201).result("User registered") else it.status(400).result("User already exists")
+                val tokenUtil = TokenUtil()
+                val userId = tokenUtil.getUserIdFromToken(token)
+                it.attribute("userId", userId)
             } catch (e: Exception) {
+                it.status(401).result("Invalid or expired token")
                 e.printStackTrace()
-                it.status(500)
             }
         }
-
-        app.post("/auth/login") {
-            val body = it.body()
-            try {
-                val request = Json.decodeFromString<LoginRequest>(body)
-                val success = userHandler.login(request.usernameOrEmail, request.rawPassword)
-                if (success != null) it.status(200).result(success) else it.status(401)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                it.status(500)
-            }
-        }
+        app.start(7070)
     }
 }

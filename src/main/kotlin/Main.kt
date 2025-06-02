@@ -8,14 +8,6 @@ import org.example.repository.UserRepository
 fun main() {
     val connector = MongoConnector("mongodb://moth:${System.getenv("mothpw")}@localhost/runquest")
     val userHandler = UserHandler(UserRepository(connector))
-    Endpoints(userHandler).init()
-
-    println(userHandler.register(
-        "john doe",
-        "supersecret",
-        "hej@gmail.com",
-    ))
-    println(userHandler.login("john doe", "supersecret"))
-    println(userHandler.login("hej@gmail.com", "superwrong"))
+    Endpoints(userHandler)
 
 }
