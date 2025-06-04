@@ -2,7 +2,7 @@ package org.example.dto
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
-import org.example.serialisers.UnixTimestampSerializer
+import org.example.serializers.UnixTimestampSerializer
 
 @Serializable
 data class RegisterRequest(

@@ -1,4 +1,4 @@
-package org.example.serialisers
+package org.example.serializers
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.ExperimentalSerializationApi

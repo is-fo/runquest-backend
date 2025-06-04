@@ -5,7 +5,7 @@ import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import org.bson.codecs.kotlinx.ObjectIdSerializer
 import org.bson.types.ObjectId
-import org.example.serialisers.InstantAsBsonDateTimeSerializer
+import org.example.serializers.InstantAsBsonDateTimeSerializer
 
 @OptIn(ExperimentalSerializationApi::class)
 @Serializable

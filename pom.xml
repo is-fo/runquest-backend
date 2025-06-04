@@ -102,17 +102,11 @@
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongodb-driver-sync</artifactId>
-            <version>5.5.0</version>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/org.mongodb/mongodb-driver-kotlin-coroutine -->
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-kotlin-coroutine</artifactId>
             <version>5.5.0</version>
-            <scope>runtime</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
         <dependency>
@@ -135,6 +129,12 @@
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>kotlinx-serialization-json</artifactId>
             <version>1.8.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core -->
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+            <version>1.10.2</version>
         </dependency>
         <dependency>
             <groupId>org.mongodb</groupId>

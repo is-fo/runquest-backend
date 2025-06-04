@@ -8,7 +8,7 @@ import org.mindrot.jbcrypt.BCrypt
 
 class UserHandler(private val userRepository: UserRepository) {
 
-    fun register(username: String, password: String, email: String, role: String = "regular"): Boolean {
+    suspend fun register(username: String, password: String, email: String, role: String = "regular"): Boolean {
         val usernameExists = userRepository.findByField("username", username).isNotEmpty()
         val emailExists = userRepository.findByField("email", email).isNotEmpty()
 
@@ -28,7 +28,7 @@ class UserHandler(private val userRepository: UserRepository) {
         return false
     }
 
-    fun login(usernameOrEmail: String, rawPassword: String): String? {
+    suspend fun login(usernameOrEmail: String, rawPassword: String): String? {
         val user = if (usernameOrEmail.contains("@")) userRepository.findByField("email", usernameOrEmail).firstOrNull()
             else userRepository.findByField("username", usernameOrEmail).firstOrNull()
         val correctPassword = user?.let { BCrypt.checkpw(rawPassword, user.hashedPassword) }

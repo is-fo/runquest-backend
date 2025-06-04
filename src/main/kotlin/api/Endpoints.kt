@@ -1,6 +1,9 @@
 package org.example.api
 
 import io.javalin.Javalin
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import org.example.auth.UserHandler
 import org.example.auth.util.TokenUtil
 import org.example.repository.GpsDataRepository
@@ -9,9 +12,10 @@ class Endpoints(userHandler: UserHandler, gpsDataRepository: GpsDataRepository) 
     init {
 
         val app = Javalin.create()
+        val coroutineScope = CoroutineScope(Dispatchers.IO)
 
-        AuthEndpoints(app, userHandler)
-        RunEndpoints(app, gpsDataRepository)
+        AuthEndpoints(app, coroutineScope, userHandler)
+        RunEndpoints(app, coroutineScope, gpsDataRepository)
 
         app.beforeMatched {
             val path = it.path()

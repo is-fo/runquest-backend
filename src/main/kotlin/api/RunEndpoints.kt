@@ -1,12 +1,14 @@
 package org.example.api
 
 import io.javalin.Javalin
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.future.future
 import org.example.repository.GpsDataRepository
 import kotlinx.serialization.json.Json
 import org.example.dto.GpsBatchRequest
 import org.example.mapping.GpsMapper
 
-class RunEndpoints(private val app: Javalin, private val gpsDataRepository: GpsDataRepository) {
+class RunEndpoints(private val app: Javalin, private val scope: CoroutineScope, private val gpsDataRepository: GpsDataRepository) {
     init {
         testAuth()
         testRun()
@@ -33,8 +35,13 @@ class RunEndpoints(private val app: Javalin, private val gpsDataRepository: GpsD
                     throw IllegalAccessException("Mismatched userId: body=${request.userId}, attribute=$attributeUserId")
                 }
                 val gpsRecords = GpsMapper().gpsBatchRequestToListOfGpsRecord(request)
-                gpsDataRepository.insertMany(gpsRecords)
-                it.status(201)
+
+                it.future {
+                    scope.future {
+                        gpsDataRepository.insertMany(gpsRecords)
+                        it.status(201)
+                    }
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
                 it.status(500)
