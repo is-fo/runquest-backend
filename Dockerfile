@@ -4,8 +4,8 @@ WORKDIR /app
 COPY . .
 RUN mvn clean package -DskipTests
 
-COPY target/runquest-backend-1.0-SNAPSHOT.jar app.jar
 FROM eclipse-temurin:17-jre-alpine
+COPY target/runquest-backend-1.0-SNAPSHOT.jar app.jar
 WORKDIR /app
 COPY --from=builder /app/target/runquest-backend-1.0-SNAPSHOT.jar app.jar
 ENV PORT=7070
