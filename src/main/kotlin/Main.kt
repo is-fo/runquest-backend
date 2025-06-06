@@ -10,7 +10,7 @@ import org.example.repository.UserRepository
 fun main() {
 
         try {
-            val connector = MongoConnector("mongodb://moth:${System.getenv("mothpw")}@localhost/runquest")
+            val connector = MongoConnector("mongodb+srv://moth:${System.getenv("mothpw")}@dbteknik.stwun.mongodb.net/?retryWrites=true&w=majority&appName=dbteknik")
             val userHandler = UserHandler(UserRepository(connector))
             //TODO inte använda GpsDataRepository direkt i Endpoints
             val gpsDataRepository = GpsDataRepository(connector)
