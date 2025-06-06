@@ -21,6 +21,8 @@ class Endpoints(userHandler: UserHandler, gpsDataRepository: GpsDataRepository) 
             val path = it.path()
             if (path.startsWith("/auth")) return@beforeMatched
 
+            if (path.startsWith("/test")) return@beforeMatched //temporär bypass
+
             val authHeader = it.header("Authorization")
             if (authHeader == null) {
                 it.status(401).result("Missing Authorization header").skipRemainingHandlers()
