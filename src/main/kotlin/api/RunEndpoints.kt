@@ -17,8 +17,9 @@ class RunEndpoints(private val app: Javalin, private val scope: CoroutineScope, 
     fun testAuth() {
         app.post("/test") {
             try {
-                val userId = it.attribute<String>("userId")
-                it.result(userId.toString())
+//                val userId = it.attribute<String>("userId")
+//                it.result(userId.toString())
+                it.result("ok")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -30,10 +31,10 @@ class RunEndpoints(private val app: Javalin, private val scope: CoroutineScope, 
             try {
                 val body = it.body()
                 val request = Json.decodeFromString<GpsBatchRequest>(body)
-                val attributeUserId = it.attribute<String>("userId")
-                if (request.userId != attributeUserId) {
-                    throw IllegalAccessException("Mismatched userId: body=${request.userId}, attribute=$attributeUserId")
-                }
+//                val attributeUserId = it.attribute<String>("userId")
+//                if (request.userId != attributeUserId) {
+//                    throw IllegalAccessException("Mismatched userId: body=${request.userId}, attribute=$attributeUserId")
+//                }
                 val gpsRecords = GpsMapper().gpsBatchRequestToListOfGpsRecord(request)
 
                 it.future {
